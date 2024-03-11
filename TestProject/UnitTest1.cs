@@ -81,7 +81,7 @@ public class Tests
 
         var acutal = GetSmallestN(2, table);
 
-        Assert.That(acutal, Is.EqualTo(expected));
+        Assert.That(acutal, Is.EqualTo(expected).And.Ordered.Ascending);
     }
 
     [Test]
@@ -92,7 +92,7 @@ public class Tests
 
         var acutal = GetSmallestN(2, table);
 
-        Assert.That(acutal, Is.EqualTo(expected));
+        Assert.That(acutal, Is.EqualTo(expected).And.Ordered.Ascending);
     }
 
     private T[] GetSmallestN<T>(int n, T[][] table) where T : IComparable<T>
@@ -108,7 +108,7 @@ public class Tests
 
                 BisectInsert(sortedList, currentValue);
 
-                if (sortedList.Count >= n && sortedList[^1].Equals(currentValue))
+                if (sortedList.Count > n)
                     sortedList.RemoveAt(sortedList.Count - 1);
 
                 _iterations++; // For testing purposes only

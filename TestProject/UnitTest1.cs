@@ -2,6 +2,8 @@ namespace TestProject;
 
 public class Tests
 {
+    private int _iterations = 0;
+
     private int[][] _tables =
     [
         [10, 20, 30, 40, 50],
@@ -9,6 +11,12 @@ public class Tests
         [5, 15, 25, 35, 45, 55],
         [3, 6, 9, 17, 18, 24, 27]
     ];
+
+    [SetUp]
+    public void Setup()
+    {
+        _iterations = 0;
+    }
 
     [Test]
     [TestCase(1, 1)]
@@ -24,6 +32,16 @@ public class Tests
     [TestCase(2, 0, 1, 3, 4)]
     [TestCase(3, 0, 1, 2, 4)]
     [TestCase(4, 0, 1, 2, 3)]
+    public void BisectInsert_InsertingNonExisting_ShouldYieldSortedList(int numberToInsert, params int[] initialArray)
+    {
+        var actualList = initialArray.ToList();
+
+        BisectInsert(actualList, numberToInsert);
+
+        Assert.That(actualList, Is.Ordered.Ascending);
+    }
+
+    [Test]
     [TestCase(0, 0)]
     [TestCase(0, 0, 1)]
     [TestCase(1, 0, 1)]
@@ -34,13 +52,25 @@ public class Tests
     [TestCase(1, 0, 1, 2, 3)]
     [TestCase(2, 0, 1, 2, 3)]
     [TestCase(3, 0, 1, 2, 3)]
-    public void BisectInsert(int numberToInsert, params int[] initialArray)
+    public void BisectInsert_InsertingDuplicate_ShouldYieldSortedList(int numberToInsert, params int[] initialArray)
     {
         var actualList = initialArray.ToList();
 
         BisectInsert(actualList, numberToInsert);
 
         Assert.That(actualList, Is.Ordered.Ascending);
+    }
+
+    [Test]
+    public void BisectInsert_ListIsEmpty_ShouldGetInserted()
+    {
+        const int numberToInsert = 0;
+        var expectedList = new List<int> { numberToInsert };
+        var actualList = new List<int>();
+
+        BisectInsert(actualList, numberToInsert);
+
+        Assert.That(actualList, Is.EquivalentTo(expectedList));
     }
 
     [Test]
@@ -65,18 +95,23 @@ public class Tests
         Assert.That(acutal, Is.EqualTo(expected));
     }
 
-    private T[] GetSmallestN<T>(int n, T[][] tabls) where T : IComparable<T>
+    private T[] GetSmallestN<T>(int n, T[][] table) where T : IComparable<T>
     {
         List<T> sortedList = new();
+        bool[] needsChecking = Enumerable.Repeat(true, table.Length).ToArray();
 
-        for (int i = 0; i < tabls.Length; i++)
+        for (int i = 0; i < table.Length; i++)
         {
-            for (int j = 0; j < tabls[i].Length; j++)
+            for (int j = 0; j < table[i].Length; j++)
             {
-                T currentValue = tabls[i][j];
+                T currentValue = table[i][j];
 
-                if (sortedList.Count < n)
-                    sortedList.Add(currentValue);
+                BisectInsert(sortedList, currentValue);
+
+                if (sortedList.Count >= n && sortedList[^1].Equals(currentValue))
+                    sortedList.RemoveAt(sortedList.Count - 1);
+
+                _iterations++; // For testing purposes only
             }
         }
 
@@ -88,13 +123,7 @@ public class Tests
         int step = targetList.Count + targetList.Count % 2;
         int i = 0;
 
-        if (step / 2 == 0)
-        {
-            targetList.Insert(i, itemToInsert);
-            return;
-        }
-
-        do
+        while (step != 0 && i >= 0 && i < targetList.Count)
         {
             step /= 2;
 
@@ -104,7 +133,7 @@ public class Tests
                 break;
 
             i += step * comparisonResult + (comparisonResult > 0 && step == 0 ? 1 : 0);
-        } while (step != 0 && i >= 0 && i < targetList.Count);
+        }
 
         if (i < 0) i = 0;
         else if (i > targetList.Count) i = targetList.Count;

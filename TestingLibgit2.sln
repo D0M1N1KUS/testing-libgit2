@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingLibgit2", "TestingLibgit2\TestingLibgit2.csproj", "{C120842F-0514-4240-96BF-FEEC57E697BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{52646465-247F-4C20-B525-BB2A776611B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{C120842F-0514-4240-96BF-FEEC57E697BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C120842F-0514-4240-96BF-FEEC57E697BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C120842F-0514-4240-96BF-FEEC57E697BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52646465-247F-4C20-B525-BB2A776611B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52646465-247F-4C20-B525-BB2A776611B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52646465-247F-4C20-B525-BB2A776611B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52646465-247F-4C20-B525-BB2A776611B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
